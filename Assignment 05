@@ -1,0 +1,94 @@
+package cp120.assignments.assignment005;
+
+public class Crypto
+{
+    private static final int    GROUPING        = 3;
+    private static final char   FILLER          = '\u0000';
+    
+    public static String encrypt( String str )
+    {
+        StringBuilder   bldr    = new StringBuilder( str );
+        int             len     = bldr.length();
+        int             test    = GROUPING - len % GROUPING;
+        
+        if ( test == 0 )
+            test = GROUPING; 
+        for ( int inx = 0 ; inx < test ; ++inx )
+            bldr.append( FILLER );
+        regroup( bldr );
+        incr( bldr );
+        
+        return bldr.toString();
+    }
+    
+    public static String decrypt( String str )
+    {
+        int     len     = str.length();
+        if ( len % GROUPING != 0 )
+            throw new IllegalArgumentException( "bad argument" );
+        
+        StringBuilder   bldr    = new StringBuilder( str );
+        decr( bldr );
+        degroup( bldr );
+        
+        boolean done    = false;
+        for ( int inx = len - 1 ; inx >= 0 && !done ; --inx )
+            if ( bldr.charAt( inx ) == FILLER )
+                bldr.deleteCharAt( inx );
+        
+        return bldr.toString();
+            
+    }
+    
+    private static void regroup( StringBuilder bldr )
+    {
+        int     len     = bldr.length();
+        String  save    = bldr.substring( len - GROUPING, len );
+        int     last    = len - GROUPING;
+        
+        for ( int inx = last ; inx >= GROUPING ; inx -= GROUPING )
+        {
+            int     dest    = inx - GROUPING;
+            String  str     = bldr.substring( dest, inx );
+            bldr.replace( inx, inx + GROUPING, str );
+        }
+        bldr.replace( 0, GROUPING, save );
+    }
+    
+    private static void degroup( StringBuilder bldr )
+    {
+        int     len     = bldr.length();
+        int     last    = len - GROUPING;
+        String  save    = bldr.substring( 0, GROUPING );
+        
+        for ( int inx = GROUPING ; inx < len ; inx += GROUPING )
+        {
+            int     dest    = inx + GROUPING;
+            String  str     = bldr.substring( inx, dest );
+            bldr.replace( inx - GROUPING, inx, str );
+        }
+        bldr.replace( last, len, save );
+    }
+    
+    private static void incr( StringBuilder bldr )
+    {
+        int len = bldr.length();
+        for ( int inx = 0 ; inx < len ; ++inx  )
+        {
+            char    temp    = bldr.charAt( inx );
+            temp = (char)(temp + inx);
+            bldr.setCharAt( inx, temp );
+        }
+    }
+    
+    private static void decr( StringBuilder bldr )
+    {
+        int len = bldr.length();
+        for ( int inx = 0 ; inx < len ; ++inx  )
+        {
+            char    temp    = bldr.charAt( inx );
+            temp = (char)(temp - inx);
+            bldr.setCharAt( inx, temp );
+        }
+    }
+}
