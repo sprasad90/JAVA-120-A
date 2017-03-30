@@ -1,0 +1,40 @@
+package cp120.assignments.assignment004;
+
+import javax.swing.JOptionPane;
+
+public class Utils extends OpCanceledException {
+	
+
+	public static int askInt(int min, int max) {
+		boolean inputAccepted = false;
+		String input = null;
+		int inputNumber = 0;
+		
+		do {
+			try {
+				input = JOptionPane
+						.showInputDialog("Enter an integer between min and max.");
+				inputNumber = Integer.parseInt(input);
+
+				if ((inputNumber < min) || (inputNumber > max)) {
+					inputAccepted = false;
+
+					JOptionPane.showMessageDialog(null, inputNumber
+							+ " is not valid");
+				}
+
+				else {
+					inputAccepted = true;
+
+				}
+			} catch (NumberFormatException e) {
+				// The typed text was not an integer
+				JOptionPane.showMessageDialog(null, inputAccepted
+						+ " is not valid");
+			}
+
+		} while (!inputAccepted);
+		return inputNumber;
+
+	}
+}
