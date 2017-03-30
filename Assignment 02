@@ -1,0 +1,65 @@
+package cp120.assignments.assignment002;
+
+public class BitMasks
+{
+
+    public static void main(String[] args)
+    {
+        int testVal1    = 0b0110100100011001;
+        //                       ^^
+        int testVal2    = 0b0010101100011101;
+        //                       ^^
+        int testVal3    = 0b0110110100011001;
+        //                       ^^
+        int testVal4    = 0b0110111100011101;
+        //                       ^^
+
+        parse( testVal1 );
+        parse( testVal2 );
+        parse( testVal3 );
+        parse( testVal4 );
+    }
+
+    private static void parse( int toParse )
+    {
+        int originField = 0;
+        int originMask  = 0b0000000000000111;
+        int secField    = 3;
+        int secMask     = 0b0000000000011000;
+        int dataField   = 5;
+        int dataMask    = 0b0000000111100000;
+        int countField  = 9;
+        int countMask   = 0b0000011000000000;
+        int startField  = 11;
+        int startMask   = 0b0000100000000000;
+        int ctrlField   = 12;
+        int ctrlMask    = 0b1111000000000000;
+        
+        int origin      = parse( toParse, originField, originMask );
+        int sec         = parse( toParse, secField, secMask );
+        int data        = parse( toParse, dataField, dataMask );
+        int count       = parse( toParse, countField, countMask );
+        int start       = parse( toParse, startField, startMask );
+        int ctrl        = parse( toParse, ctrlField, ctrlMask );
+        
+        String          newl    = System.getProperty( "line.separator" );
+        StringBuilder   bldr    = 
+            new StringBuilder( Integer.toBinaryString( toParse ) );
+        bldr.append( Integer.toBinaryString( toParse ) ).append( newl );
+        bldr.append( "origin = ").append( origin ).append( newl );
+        bldr.append( "sec = ").append( sec ).append( newl );
+        bldr.append( "data = ").append( data ).append( newl );
+        bldr.append( "count = ").append( count ).append( newl );
+        bldr.append( "start = ").append( start ).append( newl );
+        bldr.append( "ctrl = ").append( ctrl ).append( newl );
+        bldr.append( newl );
+        
+        System.out.println( bldr.toString() );
+    }
+    
+    private static int parse( int toParse, int field, int mask )
+    {
+        int result  = (toParse & mask) >>> field;
+        return result;
+    }
+}
