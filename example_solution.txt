@@ -1,0 +1,12 @@
+while (!invalid)
+try {
+
+input = Show dialog()
+test for null
+result= integer.parseInt(inout)
+
+
+
+catch{
+ (numberformat exception)
+}
